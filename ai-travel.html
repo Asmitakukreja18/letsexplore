@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atlas AI · Let's Explore DMC | Your Personal Trip Architect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="js/nav.js" defer></script>
+
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "navy":       "#0B1F3A",
+                        "navy-deep":  "#061224",
+                        "ocean":      "#1E88E5",
+                        "sunset":     "#F4A261",
+                        "sand":       "#F9FAFC",
+                        "stone":      "#F1F5F9",
+                        "mist":       "#EBF4FF",
+                        "ink":        "#0F172A",
+                        "fog":        "#64748B",
+                        "ai-purple":  "#7B61FF",
+                        "ai-cyan":    "#00C6FF",
+                        "glass-bg":   "rgba(255, 255, 255, 0.06)",
+                        "glass-border": "rgba(255, 255, 255, 0.12)",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        sans:    ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['"Playfair Display"', '"Cormorant Garamond"', 'serif'],
+                        serif:   ['"Cormorant Garamond"', '"Playfair Display"', 'serif'],
+                        mono:    ['JetBrains Mono'],
+                    },
+                    fontSize: {
+                      "eyebrow": ["0.7rem", { letterSpacing: "0.42em", fontWeight: "600", textTransform: "uppercase" }],
+                      "section-title":["clamp(1.8rem, 3vw, 2.8rem)", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "600" }],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                        'bounce-dot': 'bounceDot 1.4s ease-in-out infinite',
+                        'gradient-shift': 'gradientShift 15s ease infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(123,97,255,0.4)' },
+                            '50%': { boxShadow: '0 0 46px rgba(0,198,255,0.55)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        bounceDot: {
+                            '0%, 80%, 100%': { transform: 'scale(0.8)', opacity: '0.5' },
+                            '40%': { transform: 'scale(1.2)', opacity: '1' },
+                        },
+                        gradientShift: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+
+<style>
+        * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+        *::-webkit-scrollbar { width: 6px; }
+        *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background:
+              radial-gradient(ellipse at 10% 0%, rgba(30,136,229,0.22), transparent 55%),
+              radial-gradient(ellipse at 90% 100%, rgba(123,97,255,0.24), transparent 55%),
+              linear-gradient(135deg, #061224 0%, #0B1F3A 45%, #061224 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 18s ease infinite;
+            color: white;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.38;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .orb-1 { width: 560px; height: 560px; background: #1E88E5; top: -220px; left: -180px; animation: float 9s ease-in-out infinite; }
+        .orb-2 { width: 500px; height: 500px; background: #7B61FF; bottom: -220px; right: -160px; animation: float 11s ease-in-out infinite 1.2s; }
+        .orb-3 { width: 420px; height: 420px; background: #00C6FF; top: 55%; left: 50%; transform: translate(-50%, -50%); animation: float 13s ease-in-out infinite 2.4s; opacity: 0.22; }
+        .orb-4 { width: 380px; height: 380px; background: #F4A261; top: 20%; right: 10%; animation: float 14s ease-in-out infinite 3s; opacity: 0.14; }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.32);
+        }
+
+        .glass-card-strong {
+            background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
+            backdrop-filter: blur(26px);
+            -webkit-backdrop-filter: blur(26px);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 20px 70px -20px rgba(0,0,0,0.55);
+        }
+
+        .ai-avatar {
+            background: linear-gradient(135deg, #7B61FF, #00C6FF);
+            box-shadow: 0 0 24px rgba(123,97,255,0.45);
+            animation: pulseGlow 2.6s ease-in-out infinite;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, #0B1F3A, #1E88E5);
+            border: 2px solid rgba(255,255,255,0.18);
+        }
+
+        .ai-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px 20px 20px 6px;
+        }
+
+        .user-bubble {
+            background: linear-gradient(135deg, #1E88E5, #1565C0);
+            border-radius: 20px 20px 6px 20px;
+            box-shadow: 0 6px 28px rgba(30,136,229,0.35);
+        }
+
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .quick-btn:hover {
+            background: rgba(244,162,97,0.12);
+            border-color: rgba(244,162,97,0.55);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px -10px rgba(244,162,97,0.25);
+        }
+        .quick-btn:active { transform: translateY(0) scale(0.98); }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .result-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(244,162,97,0.45);
+            box-shadow: 0 20px 50px -18px rgba(0,0,0,0.55), 0 0 32px rgba(244,162,97,0.08);
+        }
+
+        .match-badge {
+            background: linear-gradient(135deg, #10B981, #059669);
+            box-shadow: 0 2px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #F4A261, #e07e36);
+            transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 6px 26px rgba(244,162,97,0.45);
+        }
+        .send-btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 10px 40px rgba(244,162,97,0.65);
+        }
+        .send-btn:active { transform: scale(0.96); }
+
+        .typing-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: bounceDot 1.4s ease-in-out infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            background: rgba(255, 255, 255, 0.10);
+            border-color: rgba(244,162,97,0.6);
+            box-shadow: 0 0 0 4px rgba(244,162,97,0.12);
+            outline: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .hero-gradient-text {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F4A261 45%, #00C6FF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .msg-enter {
+            opacity: 0;
+            transform: translateY(15px);
+            animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .premium-cta {
+            background: linear-gradient(135deg, #7B61FF 0%, #00C6FF 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 5s ease infinite;
+            box-shadow: 0 10px 40px -8px rgba(123,97,255,0.5);
+            transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .premium-cta:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 16px 50px -8px rgba(123,97,255,0.65);
+        }
+
+        .accent-cta {
+            background: linear-gradient(135deg, #F4A261 0%, #e07e36 100%);
+            box-shadow: 0 10px 36px -8px rgba(244,162,97,0.55);
+            transition: all 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .accent-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 46px -8px rgba(244,162,97,0.72);
+        }
+
+        .tag-pill {
+            background: rgba(30,136,229,0.10);
+            border: 1px solid rgba(30,136,229,0.22);
+            color: #93C5FD;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+<div class="bg-orb orb-4"></div>
+
+<main class="relative z-10 pt-28 pb-24 px-4 md:px-8">
+
+    <!-- Hero Section — Clean Travel Planner -->
+    <section class="max-w-5xl mx-auto text-center mb-10 md:mb-14 relative">
+        <!-- Soft Cinematic Hero Image Backdrop -->
+        <div class="absolute inset-x-0 -top-28 h-[620px] -z-0 overflow-hidden opacity-35 pointer-events-none">
+            <div class="absolute inset-0" style="background-image:url('https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=2000&q=80'); background-size:cover; background-position:center;"></div>
+            <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(6,18,36,0.35) 0%, rgba(6,18,36,0.78) 58%, rgba(6,18,36,1) 100%);"></div>
+        </div>
+
+        <!-- Eyebrow pill (cleaner: no overly technical AI hype) -->
+        <div class="inline-flex items-center gap-3 px-4 py-2 mb-7 rounded-full glass-card-strong border border-white/12">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            <span class="material-symbols-outlined text-sunset text-sm" style="font-variation-settings: 'FILL' 1;">edit_calendar</span>
+            <span class="text-xs font-bold tracking-widest text-white/85 uppercase" style="letter-spacing:0.3em;">AI Trip Planner <span class="text-sunset/85 ml-2 text-[10px]">(Beta)</span></span>
+        </div>
+
+        <!-- Cleaner, simpler, trustable headline -->
+        <h1 class="font-display text-4xl md:text-6xl lg:text-7xl mb-5 hero-gradient-text leading-[1.02] font-medium relative z-10">
+            Plan Your<br/>
+            <span class="italic" style="font-family:'Cormorant Garamond',serif;font-weight:400;">Perfect Trip</span>, in seconds.
+        </h1>
+        <p class="max-w-2xl mx-auto text-sm md:text-base lg:text-lg text-white/72 leading-relaxed font-serif italic mb-8" style="font-family:'Cormorant Garamond',serif;">
+            Tell us where you want to go — beach, mountains, culture or city — and we'll craft a bespoke itinerary instantly.
+            Our travel experts from Amravati then personalise every detail just for you.
+        </p>
+
+        <!-- DUAL CTA BUTTONS (user gets clear choice) -->
+        <div class="flex flex-wrap items-center justify-center gap-4 md:gap-5 mb-10">
+            <a href="deals.html" class="accent-cta text-white font-semibold px-7 md:px-9 py-3.5 md:py-4 rounded-2xl inline-flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings:'FILL'1;">travel_explore</span>
+                Explore Packages
+            </a>
+            <button id="ai-focus-cta" class="premium-cta text-white font-semibold px-7 md:px-9 py-3.5 md:py-4 rounded-2xl inline-flex items-center gap-2.5">
+                <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings:'FILL'1;">auto_awesome</span>
+                Try AI Planner
+            </button>
+        </div>
+
+        <!-- Trust strip: human experts behind the AI -->
+        <div class="flex flex-wrap items-center justify-center gap-5 md:gap-8 mb-2">
+            <div class="flex items-center gap-3 glass-card px-4 py-2.5 rounded-2xl">
+                <span class="material-symbols-outlined text-sunset text-xl" style="font-variation-settings:'FILL'1;">flight_takeoff</span>
+                <div class="text-left">
+                    <div class="text-[10px] text-white/55 uppercase tracking-widest">Destinations</div>
+                    <div class="font-display text-white text-lg font-semibold leading-none">42+</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 glass-card px-4 py-2.5 rounded-2xl">
+                <span class="material-symbols-outlined text-[#00C6FF] text-xl" style="font-variation-settings:'FILL'1;">people</span>
+                <div class="text-left">
+                    <div class="text-[10px] text-white/55 uppercase tracking-widest">Happy Travellers</div>
+                    <div class="font-display text-white text-lg font-semibold leading-none">10,000+</div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 glass-card px-4 py-2.5 rounded-2xl">
+                <span class="material-symbols-outlined text-[#7B61FF] text-xl" style="font-variation-settings:'FILL'1;">grade</span>
+                <div class="text-left">
+                    <div class="text-[10px] text-white/55 uppercase tracking-widest">Google Rating</div>
+                    <div class="font-display text-white text-lg font-semibold leading-none">4.9 <span class="text-sunset text-base">★</span></div>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 glass-card px-4 py-2.5 rounded-2xl">
+                <span class="material-symbols-outlined text-sunset text-xl" style="font-variation-settings:'FILL'1;">support_agent</span>
+                <div class="text-left">
+                    <div class="text-[10px] text-white/55 uppercase tracking-widest">Human experts</div>
+                    <div class="font-display text-white text-lg font-semibold leading-none">24/7 backup</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Container -->
+    <section class="max-w-3xl mx-auto mb-16">
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl">
+
+            <!-- Chat Header -->
+            <div class="glass-card-strong px-5 md:px-8 py-4 flex items-center justify-between border-b border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="ai-avatar w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-white text-lg" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-semibold text-white text-sm md:text-base">Atlas AI</h3>
+                        <p class="text-[11px] md:text-xs text-green-400 flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                            Online • Ready to design
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1">
+                    <button class="w-8 h-8 rounded-full hover:bg-white/5 flex items-center justify-center text-slate-400 hover:text-white transition">
+                        <span class="material-symbols-outlined text-lg">more_vert</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chat-messages" class="p-5 md:p-8 space-y-5 md:space-y-6 overflow-y-auto" style="max-height: 62vh;">
+            </div>
+
+            <!-- Quick Options (will be dynamically shown/hidden) -->
+            <div id="quick-options" class="px-5 md:px-8 pb-3 hidden">
+                <div class="flex flex-wrap gap-2">
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="px-5 md:px-8 py-4 md:py-5 border-t border-white/5">
+                <div class="flex items-end gap-2 md:gap-3">
+                    <div class="flex-1 relative group">
+                        <textarea
+                            id="ai-chat-input"
+                            rows="1"
+                            class="input-field w-full rounded-2xl px-4 md:px-5 py-3 pr-14 resize-none text-sm md:text-base text-white placeholder-slate-400"
+                            placeholder="Describe your dream journey..."
+                        ></textarea>
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-slate-400 hover:text-neon-cyan hover:bg-white/5 transition-all" title="Voice Input">
+                            <span class="material-symbols-outlined text-lg">mic</span>
+                        </button>
+                    </div>
+                    <button
+                        id="ai-chat-submit"
+                        class="send-btn w-12 h-12 md:w-13 md:h-13 rounded-2xl flex items-center justify-center text-white shrink-0"
+                    >
+                        <span class="material-symbols-outlined text-xl md:text-2xl" style="font-variation-settings: 'FILL' 1;">send</span>
+                    </button>
+                </div>
+                <p class="mt-3 text-[10px] md:text-xs text-slate-500 text-center">
+                    Atlas AI may produce imaginative itineraries. Always verify critical details before booking.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendation Gallery -->
+    <section id="recommendations-section" class="max-w-6xl mx-auto hidden">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 md:mb-12 gap-4">
+            <div>
+                <span class="text-xs font-semibold tracking-wider text-neon-cyan uppercase flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    Curated Matches
+                </span>
+                <h2 class="font-display text-2xl md:text-4xl font-bold text-white">Architected for You</h2>
+                <p class="text-slate-400 text-sm md:text-base mt-2">Handpicked experiences aligned with your preferences</p>
+            </div>
+        </div>
+
+        <div id="recommendations-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        </div>
+
+        <!-- Final CTA -->
+        <div class="mt-16 md:mt-20 max-w-2xl mx-auto text-center">
+            <h3 class="font-display text-xl md:text-3xl font-bold text-white mb-4">Ready to turn this into reality?</h3>
+            <p class="text-slate-400 mb-8 text-sm md:text-base">Speak with a human specialist or lock in your itinerary instantly.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="premium-cta px-8 py-4 rounded-full font-bold text-white flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">flight_takeoff</span>
+                    Book This Journey
+                </button>
+                <button class="glass-card-strong px-8 py-4 rounded-full font-bold text-white flex items-center justify-center gap-2 hover:bg-white/10 transition">
+                    <span class="material-symbols-outlined text-lg">picture_as_pdf</span>
+                    Download Itinerary
+                </button>
+            </div>
+            <button class="mt-6 text-slate-400 hover:text-white text-sm flex items-center justify-center gap-2 mx-auto transition">
+                <span class="material-symbols-outlined text-base">headset_mic</span>
+                Talk to a Human Travel Designer
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<script>
+(function () {
+    /* ═══════════════════════════════════════════════════════════════
+       Atlas AI Chat — Let's Explore DMC
+       Priority: Real backend (POST /api/chat via Gemini)
+       Fallback: Local guided simulation (works offline / no API key)
+    ═══════════════════════════════════════════════════════════════ */
+
+    const BACKEND_URL = 'http://localhost:3000/api/chat';
+
+    const chatMessagesEl = document.getElementById('chat-messages');
+    const quickOptionsEl  = document.getElementById('quick-options');
+    const quickOptionsInner = quickOptionsEl.querySelector('div');
+    const chatInput       = document.getElementById('ai-chat-input');
+    const chatSubmit      = document.getElementById('ai-chat-submit');
+    const recommendationsSection = document.getElementById('recommendations-section');
+    const recommendationsGrid    = document.getElementById('recommendations-grid');
+
+    /* ── Mode detection ─────────────────────────────────────────── */
+    let useLiveAI = false;   // toggled to true if backend ping succeeds
+    let conversationHistory = [];  // for live mode context
+
+    // Ping the backend to see if AI is available
+    fetch(BACKEND_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: '__ping__' }),
+        signal: AbortSignal.timeout(3000)
+    }).then(r => {
+        // If we get any non-503 response the server is live
+        if (r.status !== 503 && r.status !== 404) useLiveAI = true;
+    }).catch(() => { useLiveAI = false; });
+
+    /* ── State for local simulation ─────────────────────────────── */
+    const localState = { step: 0, destination: null, vibe: null, budget: null, dates: null };
+
+    const localSteps = [
+        {
+            question: "Hi! I'm Atlas, your personal travel architect. Where would you like to go?",
+            placeholder: "e.g. Bali, Maldives, Swiss Alps, Japan...",
+            options: [
+                { label: "Beach Vibes",    value: "beach" },
+                { label: "Mountain Escape",value: "mountain" },
+                { label: "City Luxury",    value: "city" },
+                { label: "Cultural Tour",  value: "cultural" }
+            ],
+            extract: (val) => { localState.destination = val; localState.step++; }
+        },
+        {
+            question: "Lovely! What kind of experience are you looking for — Romantic getaway, Adventure, Family fun, or Ultra Luxury?",
+            placeholder: "Describe the vibe...",
+            options: [
+                { label: "Honeymoon / Romantic", value: "romantic" },
+                { label: "Adventure",             value: "adventure" },
+                { label: "Family",                value: "family" },
+                { label: "Ultra Luxury",          value: "luxury" }
+            ],
+            extract: (val) => { localState.vibe = val; localState.step++; }
+        },
+        {
+            question: "What's your comfortable budget range per person?",
+            placeholder: "e.g. INR 1 Lakh, $2,000...",
+            options: [
+                { label: "Under $1,000",     value: "budget" },
+                { label: "$1,000 – $2,500",  value: "mid" },
+                { label: "$2,500 – $5,000",  value: "premium" },
+                { label: "Luxury No Limit",  value: "ultra" }
+            ],
+            extract: (val) => { localState.budget = val; localState.step++; }
+        },
+        {
+            question: "When are you planning to travel, and how many people?",
+            placeholder: "e.g. November, 2 travellers...",
+            options: [
+                { label: "This Month",     value: "soon" },
+                { label: "Next 3 Months", value: "short" },
+                { label: "6+ Months Out", value: "plan" },
+                { label: "Flexible",      value: "flex" }
+            ],
+            extract: (val) => { localState.dates = val; localState.step++; }
+        }
+    ];
+
+    const sampleDestinations = {
+        beach: [
+            { name: "Azure Sanctuary",   location: "Baa Atoll, Maldives",        price: "$4,200", match: "98", badge: "OVERWATER",
+              img: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=800&q=80",
+              tags: ["Overwater Villa","Private Butler","Infinity Pool","All-Inclusive"],
+              desc: "Total immersion in the Indian Ocean with architecture that dissolves boundaries between land and sea." },
+            { name: "Cliffside Nirvana", location: "Uluwatu, Bali, Indonesia",   price: "$2,850", match: "95", badge: "CLIFF FRONT",
+              img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+              tags: ["Private Pool Villa","Cliffside Dining","Spa Retreat","Sunset Views"],
+              desc: "Perched on dramatic limestone cliffs above the Indian Ocean with panoramic sunset views." },
+            { name: "Island Pearl Resort",location: "Bora Bora, French Polynesia",price: "$5,600", match: "96", badge: "LAGOON",
+              img: "https://images.unsplash.com/photo-1580541631950-7282082b53ce?auto=format&fit=crop&w=800&q=80",
+              tags: ["Glass Floor Villa","Lagoon Access","Private Yacht","Romantic Dinner"],
+              desc: "Authentic overwater bungalows perched on a turquoise lagoon with Mount Otemanu backdrop." }
+        ],
+        mountain: [
+            { name: "Alpine Majesty Lodge",  location: "Zermatt, Swiss Alps",   price: "$3,900", match: "97", badge: "MATTERHORN VIEW",
+              img: "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80",
+              tags: ["Mountain Rail","Ski-In/Ski-Out","Spa & Sauna","Gourmet Dining"],
+              desc: "A legendary chalet with unobstructed Matterhorn views, connected directly to the slopes." },
+            { name: "Himalayan Retreat",     location: "Ladakh, India",         price: "$2,200", match: "94", badge: "HIGH ALTITUDE",
+              img: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+              tags: ["Monastery Tours","High Passes","Stargazing","Local Culture"],
+              desc: "A boutique luxury camp set against the backdrop of the majestic Zanskar range." },
+            { name: "Patagonia Eco-Lodge",   location: "Torres del Paine, Chile",price: "$4,500", match: "93", badge: "WILDERNESS",
+              img: "https://images.unsplash.com/photo-1531794538469-a2bda3ef1e31?auto=format&fit=crop&w=800&q=80",
+              tags: ["Glacier Trek","Wildlife Safari","Fine Dining","Spa"],
+              desc: "An all-inclusive eco-lodge at the edge of the world, with exclusive guided expeditions." }
+        ],
+        city: [
+            { name: "Skyline Zenith",    location: "Downtown Dubai, UAE",  price: "$2,800", match: "96", badge: "BURJ VIEW",
+              img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+              tags: ["Burj Khalifa","Galleria Mall","Infinity Pool","24/7 Concierge"],
+              desc: "Pinnacle of urban luxury steps from the world's most exclusive shopping galleries." },
+            { name: "Artisan Boutique",  location: "Kyoto, Japan",         price: "$3,400", match: "98", badge: "RYOKAN",
+              img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80",
+              tags: ["Traditional Ryokan","Tea Ceremony","Zen Garden","Kaiseki Dining"],
+              desc: "A 300-year-old restored machiya townhouse with private onsen baths and kaiseki cuisine." },
+            { name: "Gilded Palace Suite",location: "Paris, France",        price: "$4,800", match: "95", badge: "EIFFEL VIEW",
+              img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+              tags: ["Eiffel View","Michelin Star","Private Terrace","Fashion Tour"],
+              desc: "A palatial suite in the heart of Saint-Germain-des-Pres with Parisian balconies." }
+        ],
+        cultural: [
+            { name: "Ottoman Palace Escape",location: "Istanbul, Turkiye",          price: "&#8377;42,999", match: "97", badge: "HERITAGE",
+              img: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=800&q=80",
+              tags: ["Bosphorus Cruise","Cappadocia Balloon","Cave Hotel","Grand Bazaar"],
+              desc: "From Byzantine monuments to sunrise hot air balloons over fairy chimneys — a timeless odyssey." },
+            { name: "Taj Heritage Journey",  location: "Agra & Jaipur, India",      price: "$2,400", match: "96", badge: "ROYAL INDIA",
+              img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=800&q=80",
+              tags: ["Taj Mahal Tour","Palace Hotel","Elephant Ride","Royal Dining"],
+              desc: "Live like Maharajas in heritage palaces with private tours of India's Golden Triangle." },
+            { name: "Andean Legacy",         location: "Cusco & Machu Picchu, Peru", price: "$3,200", match: "94", badge: "INCA TRAIL",
+              img: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80",
+              tags: ["Machu Picchu","Sacred Valley","Cusco Historic","Pisco Tour"],
+              desc: "A privileged exploration of Incan legacy with the Belmond Hiram Bingham luxury train." }
+        ]
+    };
+
+    /* ── UI Helpers ─────────────────────────────────────────────── */
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+    }
+
+    function typeText(el, text, speed = 16, onDone) {
+        let i = 0; el.textContent = '';
+        (function tick() {
+            if (i < text.length) {
+                el.textContent += text.charAt(i++);
+                chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+                setTimeout(tick, speed + Math.random() * 8);
+            } else if (onDone) onDone();
+        })();
+    }
+
+    function addAIMessage(text, { hasOptions = false, onShown, skipTyping = false } = {}) {
+        const wrap = document.createElement('div');
+        wrap.className = 'flex gap-3 md:gap-4 items-start msg-enter';
+        wrap.innerHTML = `
+            <div class="ai-avatar w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-white text-sm md:text-base" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+            </div>
+            <div class="ai-bubble p-4 md:p-5 max-w-[82%] md:max-w-[78%]">
+                <p class="text-sm md:text-base text-slate-100 leading-relaxed whitespace-pre-line"></p>
+            </div>`;
+        chatMessagesEl.appendChild(wrap);
+
+        const bubble = wrap.querySelector('.ai-bubble');
+        const p = wrap.querySelector('p');
+
+        if (skipTyping) {
+            p.textContent = text;
+            chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+            if (hasOptions) showLocalOptions();
+            if (onShown) onShown();
+            return;
+        }
+
+        // Typing dots
+        bubble.innerHTML = `<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>`;
+        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+        setTimeout(() => {
+            bubble.innerHTML = `<p class="text-sm md:text-base text-slate-100 leading-relaxed whitespace-pre-line"></p>`;
+            typeText(bubble.querySelector('p'), text, 15, () => {
+                if (hasOptions) showLocalOptions();
+                if (onShown) onShown();
+            });
+        }, 600 + Math.random() * 400);
+    }
+
+    function addUserMessage(text) {
+        const wrap = document.createElement('div');
+        wrap.className = 'flex gap-3 md:gap-4 items-start justify-end msg-enter';
+        wrap.innerHTML = `
+            <div class="user-bubble p-4 md:p-5 max-w-[82%] md:max-w-[78%]">
+                <p class="text-sm md:text-base text-white leading-relaxed">${escapeHtml(text)}</p>
+            </div>
+            <div class="user-avatar w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-white text-sm md:text-base" style="font-variation-settings:'FILL' 1;">person</span>
+            </div>`;
+        chatMessagesEl.appendChild(wrap);
+        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }
+
+    function addThinkingDots() {
+        const wrap = document.createElement('div');
+        wrap.id = 'atlas-thinking';
+        wrap.className = 'flex gap-3 md:gap-4 items-start msg-enter';
+        wrap.innerHTML = `
+            <div class="ai-avatar w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-white text-sm md:text-base" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+            </div>
+            <div class="ai-bubble p-4 md:p-5">
+                <span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>
+            </div>`;
+        chatMessagesEl.appendChild(wrap);
+        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+        return wrap;
+    }
+
+    function removeThinking() {
+        const el = document.getElementById('atlas-thinking');
+        if (el) el.remove();
+    }
+
+    function addLiveAIReply(text) {
+        removeThinking();
+        const wrap = document.createElement('div');
+        wrap.className = 'flex gap-3 md:gap-4 items-start msg-enter';
+        wrap.innerHTML = `
+            <div class="ai-avatar w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-white text-sm md:text-base" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+            </div>
+            <div class="ai-bubble p-4 md:p-5 max-w-[82%] md:max-w-[78%]">
+                <p class="text-sm md:text-base text-slate-100 leading-relaxed whitespace-pre-line"></p>
+            </div>`;
+        chatMessagesEl.appendChild(wrap);
+        const p = wrap.querySelector('p');
+        typeText(p, text, 12, null);
+    }
+
+    /* ── Live AI mode ───────────────────────────────────────────── */
+    async function sendToLiveAI(userMsg) {
+        conversationHistory.push({ role: 'user', content: userMsg });
+
+        // Build a single message with conversation context
+        const contextMsg = conversationHistory.map(m => `${m.role === 'user' ? 'User' : 'Atlas'}: ${m.content}`).join('\n');
+
+        addThinkingDots();
+        chatSubmit.disabled = true;
+        chatInput.disabled = true;
+
+        try {
+            const r = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: contextMsg }),
+                signal: AbortSignal.timeout(25000)
+            });
+            const data = await r.json();
+            if (r.ok && data.reply) {
+                conversationHistory.push({ role: 'atlas', content: data.reply });
+                addLiveAIReply(data.reply);
+            } else {
+                throw new Error(data.error || 'No reply');
+            }
+        } catch (err) {
+            removeThinking();
+            console.warn('Live AI failed, falling back to local:', err.message);
+            useLiveAI = false;
+            // Fall back gracefully
+            addAIMessage("I'm having trouble reaching my AI brain right now. Let me guide you the classic way instead!", {
+                hasOptions: false,
+                onShown: () => startLocalFlow()
+            });
+        } finally {
+            chatSubmit.disabled = false;
+            chatInput.disabled = false;
+            chatInput.focus();
+        }
+    }
+
+    /* ── Local simulation mode ──────────────────────────────────── */
+    function showLocalOptions() {
+        if (localState.step >= localSteps.length) { quickOptionsEl.classList.add('hidden'); return; }
+        const step = localSteps[localState.step];
+        if (!step.options?.length) { quickOptionsEl.classList.add('hidden'); return; }
+
+        quickOptionsInner.innerHTML = step.options.map(o =>
+            `<button class="quick-btn px-3 md:px-4 py-2 rounded-full text-xs md:text-sm text-slate-200 font-medium" data-value="${escapeHtml(o.value)}">${escapeHtml(o.label)}</button>`
+        ).join('');
+        quickOptionsEl.classList.remove('hidden');
+        quickOptionsInner.querySelectorAll('button').forEach(btn =>
+            btn.addEventListener('click', () => handleLocalInput(btn.dataset.value, btn.textContent.trim()))
+        );
+        chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    }
+
+    function handleLocalInput(rawVal, displayLabel) {
+        const val = rawVal?.trim();
+        if (!val) return;
+        chatInput.value = '';
+        autoResizeInput();
+        addUserMessage(displayLabel || val);
+        quickOptionsEl.classList.add('hidden');
+
+        if (localState.step < localSteps.length) {
+            localSteps[localState.step].extract(val);
+
+            if (localState.step < localSteps.length) {
+                addAIMessage(localSteps[localState.step].question, { hasOptions: true });
+            } else {
+                // All steps done — show summary + results
+                const destMap = { beach: 'Beach', mountain: 'Mountain', city: 'City Luxury', cultural: 'Cultural' };
+                const vibeMap = { romantic: 'Romantic', adventure: 'Adventure', family: 'Family', luxury: 'Ultra Luxury' };
+                const budMap  = { budget: 'Under $1,000', mid: '$1,000–$2,500', premium: '$2,500–$5,000', ultra: 'Luxury — No Limit' };
+                const dateMap = { soon: 'This Month', short: 'Next 3 Months', plan: '6+ Months Out', flex: 'Flexible' };
+
+                const summary = `Perfect! Here's what I'm designing for you:\n• Destination Type: ${destMap[localState.destination] || localState.destination}\n• Vibe: ${vibeMap[localState.vibe] || localState.vibe}\n• Budget: ${budMap[localState.budget] || localState.budget}\n• Travel window: ${dateMap[localState.dates] || localState.dates}\n\nScroll down for your curated picks!`;
+
+                addAIMessage(summary, {
+                    onShown: () => {
+                        const dests = sampleDestinations[localState.destination] || sampleDestinations.beach;
+                        renderRecommendations(dests);
+                        setTimeout(() => {
+                            addAIMessage("There you go — three handcrafted escapes, each vetted for quality, aesthetics, and exclusivity. Want to refine? Just type what you'd like to change.", { skipTyping: false });
+                        }, 700);
+                    }
+                });
+            }
+        } else {
+            addAIMessage("Got it! Feel free to refine by typing what you'd like to change — more adventure, tighter budget, different region — I'm listening.", {});
+        }
+    }
+
+    function startLocalFlow() {
+        localState.step = 0;
+        addAIMessage(localSteps[0].question, { hasOptions: true });
+    }
+
+    function renderRecommendations(dests) {
+        recommendationsGrid.innerHTML = '';
+        dests.forEach((dest, idx) => {
+            const card = document.createElement('div');
+            card.className = 'result-card rounded-3xl overflow-hidden group msg-enter';
+            card.style.animationDelay = `${0.1 + idx * 0.1}s`;
+            card.innerHTML = `
+                <div class="relative aspect-[16/10] overflow-hidden">
+                    <img src="${dest.img}" alt="${dest.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                    <div class="absolute top-4 left-4">
+                        <span class="match-badge px-3 py-1.5 rounded-full text-[11px] font-bold text-white flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">star</span>
+                            ${dest.match}% MATCH
+                        </span>
+                    </div>
+                    <div class="absolute top-4 right-4">
+                        <span class="glass-card-strong px-3 py-1.5 rounded-full text-[10px] font-bold text-white tracking-wider uppercase">${dest.badge}</span>
+                    </div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <h3 class="font-display text-xl md:text-2xl font-bold text-white mb-1">${dest.name}</h3>
+                        <p class="text-xs text-slate-300 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">location_on</span>
+                            ${dest.location}
+                        </p>
+                    </div>
+                </div>
+                <div class="p-5 md:p-6">
+                    <div class="flex flex-wrap gap-1.5 mb-3">
+                        ${dest.tags.map(t => `<span class="tag-pill px-2.5 py-1 rounded-full text-[10px] text-slate-300 font-medium">${t}</span>`).join('')}
+                    </div>
+                    <p class="text-xs md:text-sm text-slate-400 leading-relaxed mb-5 line-clamp-2">${dest.desc}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-wider font-semibold mb-1">From</p>
+                            <p class="font-display text-xl md:text-2xl font-bold hero-gradient-text">${dest.price}</p>
+                            <p class="text-[10px] text-slate-500">/ person</p>
+                        </div>
+                        <a href="booking.html" class="premium-cta px-4 md:px-5 py-2.5 rounded-full text-white text-xs md:text-sm font-bold flex items-center gap-2">
+                            Book Now
+                            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1;">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>`;
+            recommendationsGrid.appendChild(card);
+        });
+        recommendationsSection.classList.remove('hidden');
+        setTimeout(() => recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+    }
+
+    /* ── Input routing ──────────────────────────────────────────── */
+    function handleUserInput(rawVal, displayLabel) {
+        const val = rawVal?.trim();
+        if (!val) return;
+        chatInput.value = '';
+        autoResizeInput();
+
+        addUserMessage(displayLabel || val);
+        quickOptionsEl.classList.add('hidden');
+
+        if (useLiveAI) {
+            sendToLiveAI(val);
+        } else {
+            handleLocalInput(val, displayLabel);
+        }
+    }
+
+    function autoResizeInput() {
+        chatInput.style.height = 'auto';
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 140) + 'px';
+    }
+
+    chatInput.addEventListener('input', autoResizeInput);
+    chatInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleUserInput(chatInput.value); }
+    });
+    chatSubmit.addEventListener('click', () => handleUserInput(chatInput.value));
+
+    /* ── Init ───────────────────────────────────────────────────── */
+    function init() {
+        chatInput.placeholder = "Tell me your dream destination...";
+        setTimeout(() => {
+            if (useLiveAI) {
+                addAIMessage("Hi! I'm Atlas, your personal travel architect powered by Gemini AI. Tell me where you'd like to go, what kind of experience you want, your budget, and I'll craft bespoke recommendations from our curated catalogue!", { skipTyping: false });
+            } else {
+                addAIMessage(localSteps[0].question, { hasOptions: true });
+            }
+        }, 400);
+    }
+
+    init();
+})();
+</script>
+
+
+<script>
+(function wireAiFocus(){
+  document.addEventListener('DOMContentLoaded', function(){
+    const btn = document.getElementById('ai-focus-cta');
+    const chat = document.getElementById('ai-chat-input');
+    if (btn && chat) {
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        chat.scrollIntoView({behavior:'smooth', block:'center'});
+        setTimeout(()=>chat.focus(), 700);
+      });
+    }
+  });
+})();
+</script>
+</body>
+</html>
