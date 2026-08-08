@@ -122,7 +122,7 @@
 
       <div class="footer-col">
         <h5>Contact Us</h5>
-        <p class="footer-address"><span class="material-symbols-outlined text-base align-middle mr-1 opacity-70">location_on</span>Shakar Nagar, Opp. New Cotton Market,<br>Amravati, MH 444603</p>
+        <p class="footer-address"><span class="material-symbols-outlined text-base align-middle mr-1 opacity-70">location_on</span>Sahakar Nagar, Opp. New Cotton Market,<br>Shiv Krupa Residence, Amravati, MH</p>
         <a href="tel:+918007586871" class="footer-phone"><span class="material-symbols-outlined text-base align-middle mr-1 opacity-70">call</span>+91-8007586871</a>
         <a href="mailto:letsexploredmc@gmail.com" class="footer-email"><span class="material-symbols-outlined text-base align-middle mr-1 opacity-70">mail</span>letsexploredmc@gmail.com</a>
         <a href="https://instagram.com/lets_exploredmc" target="_blank" class="footer-ig"><span class="material-symbols-outlined text-base align-middle mr-1 opacity-70">photo_camera</span>@lets_exploredmc</a>
